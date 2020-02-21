@@ -1,0 +1,6 @@
+5
+FreeSoft|Cisco Packet Tracer|Cisco
+Shareware|Visual Studio IDE|Microsoft|01.02.2020|31
+CommercialSoft|Photoshop CS6|Adobe|13,99|15.06.2018|365
+CommercialSoft|WinRAE|	RARLAB|7,00|15.06.2019|365
+Shareware|UltraISO|EZB Systems, Inc.|01.02.2020|14
