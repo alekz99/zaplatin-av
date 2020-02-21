@@ -1,21 +1,23 @@
 ﻿using System;
 
+
 namespace Software_app
 {
+
     /// <summary>
     /// Абстрактный класс для реализации ПО.
     /// </summary>
-    abstract class Software
+    public abstract class Software
     {
         /// <summary>
         /// Переменная для хранения названия ПО.
         /// </summary>
-        protected string softName;
+        public string softName;
 
         /// <summary>
         /// Переменная для хранения производиетля ПО.
         /// </summary>
-        protected string softProducer;
+        public string softProducer;
 
         /// <summary>
         /// Конструктор класса.
@@ -56,11 +58,17 @@ namespace Software_app
     /// <summary>
     /// Класс, реализующий свободное ПО.
     /// </summary>
-    class FreeSoft : Software
+    public class FreeSoft : Software
     {
+        /// <summary>
+        /// Базовый конструктор.
+        /// </summary>
+        public FreeSoft() : base("", "") { }
         /// <summary>
         /// Конструктор класса.
         /// </summary>
+        /// <param name="softName"> Название ПО.</param>
+        /// <param name="softProducer">Производитель ПО.</param>
         public FreeSoft(string softName, string softProducer) : base(softName, softProducer) { }
 
         /// <summary>
@@ -88,22 +96,31 @@ namespace Software_app
     /// <summary>
     /// Класс, реализующий условно-бесплатное ПО.
     /// </summary>
-    class Shareware : Software
+    public class Shareware : Software
     {
         /// <summary>
         /// Дата установки ПО.
         /// </summary>
-        DateTime installationDate;
+        public DateTime installationDate;
 
         /// <summary>
         /// Переменная для хранения количества дней
         /// бесплатного пользования.
         /// </summary>
-        int freeUsePeriodDay;
+        public int freeUsePeriodDay;
 
+        public Shareware(): base("", "")
+        {
+            installationDate = DateTime.Today;
+            freeUsePeriodDay = 0;
+        }
         /// <summary>
         /// Конструктор класса.
         /// </summary>
+        /// <param name="softName">Название ПО.</param>
+        /// <param name="softProducer">Производитель ПО.</param>
+        /// <param name="installationDate">Дата установки.</param>
+        /// <param name="freeUsePeriodDay">Период бесплатного пользования.</param>
         public Shareware(string softName, string softProducer,
             DateTime installationDate, int freeUsePeriodDay) : base(softName, softProducer)
         {
@@ -138,26 +155,41 @@ namespace Software_app
     /// <summary>
     /// Класс, реализуюший коммерческое ПО.
     /// </summary>
-    class CommercialSoft : Software
+    public class CommercialSoft : Software
     {
         /// <summary>
         /// Цена ПО.
         /// </summary>
-        double cost;
+        public double cost;
 
         /// <summary>
         /// Дата установки ПО.
         /// </summary>
-        DateTime installationDate;
+        public DateTime installationDate;
 
         /// <summary>
         /// Период платной подписки.
         /// </summary>
-        int UsePeriodDay;
+        public int UsePeriodDay;
 
         /// <summary>
         /// Конструктор класса.
         /// </summary>
+        public CommercialSoft() :base("", "")
+        {
+            cost = 0;
+            installationDate = DateTime.Today;
+            UsePeriodDay = 0;
+        }
+
+        /// <summary>
+        /// Конструктор класса.
+        /// </summary>
+        /// <param name="softName">Название ПО.</param>
+        /// <param name="softProducer">Производитель ПО.</param>
+        /// <param name="cost">Цена.</param>
+        /// <param name="installationDate">Дата установки.</param>
+        /// <param name="UsePeriodDay">Период платной подписки.</param>
         public CommercialSoft(string softName, string softProducer, double cost,
             DateTime installationDate, int UsePeriodDay) : base(softName, softProducer)
         {
