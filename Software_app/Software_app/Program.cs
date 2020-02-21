@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Software_app
 {
@@ -22,6 +24,7 @@ namespace Software_app
         /// Shareware|UltraISO|EZB Systems, Inc.|01.02.2020|14</example>
         static void Main(string[] args)
         {
+
             string data;
 
             StreamReader sr = new StreamReader("input.txt");
@@ -30,6 +33,14 @@ namespace Software_app
 
             Software[] array = new Software[count];
 
+            Trace.WriteLine("An array of software has been created.");
+            Trace.Indent();
+            Trace.WriteLineIf(array.Length == count, "The number of elements in the " +
+                "array is equal to the specified value: " + count.ToString());
+            Trace.Unindent();
+
+            Trace.WriteLine("Filling Array");
+            Trace.Indent();
             for (int i = 0; i < count; i++)
             {
                 data = sr.ReadLine();
@@ -38,33 +49,87 @@ namespace Software_app
                 {
                     case "FreeSoft":
                         array[i] = new FreeSoft(attrib[1], attrib[2]);
+                        Trace.WriteLine("Creating a Class Object FreeSoft: " + array[i].WriteFullName());
                         break;
                     case "Shareware":
                         array[i] = new Shareware(attrib[1], attrib[2], DateTime.Parse(attrib[3]), Convert.ToInt32(attrib[4]));
+                        Trace.WriteLine("Creating a Class Object Shareware:" + array[i].WriteFullName());
                         break;
                     case "CommercialSoft":
                         array[i] = new CommercialSoft(attrib[1], attrib[2], Convert.ToDouble(attrib[3]),
                             DateTime.Parse(attrib[4]), Convert.ToInt32(attrib[5]));
+                        Trace.WriteLine("Creating a Class Object CommercialSoft:" + array[i].WriteFullName());
                         break;
                     default:
                         break;
                 }
             }
+            Trace.Unindent();
 
+            GenerateXML(array);
+
+            Trace.WriteLine("Display all software.");
+            Trace.Indent();
             foreach (Software sw in array)
             {
-                sw.GetInformation();
+                try { 
+                    sw.GetInformation();
+                    Trace.WriteLine("Function GetInformation completed.");
+                }
+                catch (Exception) { Trace.Fail("Error in function GetInformation.");};
                 Console.WriteLine();
             }
+            Trace.Unindent();
 
+            Trace.WriteLine("Displays available for use software.");
+            Trace.Indent();
             Console.WriteLine("Software that is valid for current date:\n");
             foreach (Software sw in array)
             {
-                if (sw.ReadyWork())
+                try
                 {
-                    Console.WriteLine(sw.WriteFullName());
+                    if (sw.ReadyWork())
+                    {
+                        Console.WriteLine(sw.WriteFullName());
+                    }
+                    Trace.WriteLine("Function ReadyWork completed.");
+                }
+                catch (Exception)
+                {
+                    Trace.Fail("Error in function GetInformation.");
                 }
             }
+            Trace.Unindent();
+            Trace.Flush();
+        }
+
+        public static void GenerateXML (Software[] array)
+        {
+            XmlSerializer serializerFreeSoft = new XmlSerializer(typeof(FreeSoft));
+            XmlSerializer serializerShareware = new XmlSerializer(typeof(Shareware));
+            XmlSerializer serializerCommercialSoft = new XmlSerializer(typeof(CommercialSoft));
+            TextWriter writer = new StreamWriter("xml_output.txt");
+
+            foreach (Software sw in array)
+            {
+                try
+                {
+                    serializerFreeSoft.Serialize(writer, sw);
+                }
+                catch (Exception) { };
+                try
+                {
+                    serializerShareware.Serialize(writer, sw);
+                }
+                catch (Exception) { };
+                try
+                {
+                    serializerCommercialSoft.Serialize(writer, sw);
+                }
+                catch (Exception) { };
+            }
+
+            writer.Close();
         }
     }
 }
